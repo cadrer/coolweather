@@ -55,10 +55,9 @@ public class ChooseAreaFragment extends Fragment {
     private List<String> dataList =new ArrayList<>();
 
     /**
-     * 省列表
+     * 省列表Merge
      */
     private List<Province> provinceList;
-
     /**
      * 市列表
      */

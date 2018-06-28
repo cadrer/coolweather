@@ -79,8 +79,8 @@ public class WeatherActivity extends AppCompatActivity {
 
     public void requestWeather(final String weatherId){
 
-        String weatherUrl = "http://guolin.tech/api/weather?cityid=" +
-                weatherId +"&key=b695726cad7546f6bed92df429f42fa5";
+        String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId + "&key=b695726cad7546f6bed92df429f42fa5";
+
         HttpUtil.sendOkHttpRequest(weatherUrl, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -88,25 +88,26 @@ public class WeatherActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(WeatherActivity.this,"获取天气信息失败",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(WeatherActivity.this,"获取天气信息失败1",Toast.LENGTH_SHORT).show();
                     }
                 });
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                final String responseText = response.body().toString();
+                final String responseText = response.body().string();
                 final Weather weather =Utility.handleWeatherResponse(responseText);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if(weather != null && "ok".equals(weather.status)){
+                        if (weather != null && "ok".equals(weather.status))
+                        {
                             SharedPreferences.Editor editor =PreferenceManager.getDefaultSharedPreferences(WeatherActivity.this).edit();
                             editor.putString("weather",responseText);
                             editor.apply();
                             showWeatherInfo(weather);
                         }else{
-                            Toast.makeText(WeatherActivity.this,"获取天气信息失败",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(WeatherActivity.this,"获取天气信息失败2",Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -145,7 +146,7 @@ public class WeatherActivity extends AppCompatActivity {
          pm25Text.setText(weather.aqi.city.pm25);
      }
 
-     String comfort ="舒适度： " + weather.suggestion.comfort;
+     String comfort ="舒适度： " + weather.suggestion.comfort.info;
      String carWash ="洗车指数： "+weather.suggestion.carWash.info;
      String sport ="运动建议： "+weather.suggestion.sport.info;
      comfortText.setText(comfort);
