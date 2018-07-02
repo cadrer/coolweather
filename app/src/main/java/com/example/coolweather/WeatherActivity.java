@@ -1,5 +1,6 @@
 package com.example.coolweather;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.coolweather.gson.Forecast;
 import com.example.coolweather.gson.Weather;
+import com.example.coolweather.service.AutoUpdateService;
 import com.example.coolweather.util.HttpUtil;
 import com.example.coolweather.util.Utility;
 
@@ -62,6 +64,8 @@ public class WeatherActivity extends AppCompatActivity {
     private Button navButton;
 
     private String mWeatherId;
+    private int mmCount;
+
 
 
     @Override
@@ -94,7 +98,7 @@ public class WeatherActivity extends AppCompatActivity {
         swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
         SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(this);
         String weatherString =prefs.getString("weather",null);
-
+        mmCount=prefs.getInt("count",0);
         if(weatherString != null){
      //有缓存时，直接解析天气数据
             Weather weather= Utility.handleWeatherResponse(weatherString);
@@ -234,6 +238,9 @@ public class WeatherActivity extends AppCompatActivity {
      carWashText.setText(carWash);
      sportText.setText(sport);
      weatherLayout.setVisibility(View.VISIBLE);
+
+        Intent intent = new Intent(this,AutoUpdateService.class);
+        startService(intent);
 
     }
 }
